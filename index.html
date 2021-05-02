@@ -176,9 +176,12 @@
         </div>
 
         <div style="padding: 10px; background-color: #1F1F23B9; text-align: center; border-style: solid; border-color: #1F1F23;">
-            <span style="color: rgb(248,248,255);">Player UUID | API Key<br></span>
-            <input id="uuid">
-            <input id="apiauth"><button onclick="downloadInnerHtml('tracker.html', 'trackerToExport', 'text/html')">Export Tracker</button><br>
+            <form onsubmit="downloadInnerHtml('tracker.html', 'trackerToExport', 'text/html')">
+                <span style="color: rgb(248,248,255);">Player UUID | API Key<br></span>
+                <input id="uuid" required="required">
+                <input id="apiauth" required="required">
+                <input type="submit" value="Export Tracker" >
+            </form><br>
             <span style="color: rgb(248,248,255);">Background Color | Border Color | Text Color<br></span>
             <input onInput="update(this.jscolor, '#box')" value="CCFFAA" data-jscolor="{alpha:1}">
             <input onInput="updateBorder(this.jscolor, '#box')" value="CCFFAA" data-jscolor="{alpha:1}">
