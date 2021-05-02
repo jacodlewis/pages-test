@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    </head>
+    <body style="background-image: url('demo_image.png')">
+        <script type="text/javascript" src="app.js"></script>
+        <script src="jscolor.js"></script>
+
+        <script>
+            jscolor.presets.default = {
+                backgroundColor:'#1F1F23B9'
+            };
+
+            function update(picker, selector) 
+            {
+                document.querySelector(selector).style.background = picker.toHEXAString();
+            }
+            function updateBorder(picker, selector) 
+            {
+                document.querySelector(selector).style.borderColor = picker.toHEXAString();
+            }
+            function updateTxtColor(picker, selector) 
+            {
+                document.querySelector(selector).style.color = picker.toHEXAString();
+            }
+
+            //-----------------------------------------------------------------------------//
+
+            function downloadInnerHtml(filename, elId, mimeType) 
+            {
+                save();
+                var elHtml = document.getElementById(elId).innerHTML;
+                var link = document.createElement('a');
+                mimeType = mimeType || 'text/plain';
+            
+                link.setAttribute('download', filename);
+                link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+                document.body.append(link)
+                link.click(); 
+                document.body.removeChild(link)
+            }
+        </script>
+
+        <div id="trackerToExport">
+            <div class="child">
+                <span style="opacity: 0;" id="uuidToUse">f7ac6ca3-3282-48cf-a28c-f1d036f67fa0</span>
+                <span style="opacity: 0;" id="authToUse">fe04804d-08f3-41a3-8656-9a540ba88e6c</span>
+                <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/minecraftia" type="text/css"/>
+                    <script>
+                        var player_uuid;
+                        var auth_key;
+
+                        var wins, losses, wr, displayWR, streak, displayStreak, kills, deaths, kd, displayKD, beds;
+
+                        function update_stats()
+                        {
+                            var player_uuid = document.getElementById("uuidToUse").innerHTML;
+                            var auth_key = document.getElementById("authToUse").innerHTML;
+
+                            fetch('https://api.hypixel.net/player?uuid='+ player_uuid +'&key='+ auth_key)
+                            .then(result => result.json())
+                            .then(({ player }) => {
+                                
+                                wins = player.stats.Bedwars.wins_bedwars;
+                                losses = player.stats.Bedwars.losses_bedwars;
+                                streak = player.stats.Bedwars.winstreak
+
+                                kills = player.stats.Bedwars.kills_bedwars;
+                                deaths = player.stats.Bedwars.deaths_bedwars;
+
+                                beds = player.stats.Bedwars.beds_broken_bedwars;
+                            })
+                        }
+
+                        setInterval(function(){ 
+                            update_stats();
+
+                            wr = wins/losses;
+                            kd = kills/deaths;
+
+                            displayStreak = streak;
+                            document.getElementById("ws-count").innerHTML = "Streak: " + displayStreak;
+                            document.getElementById("win-count").innerHTML = "Wins: " + wins;
+                            displayWR = wr;
+                            document.getElementById("win-rate").innerHTML = "WR: " + displayWR.toFixed(2);
+                            document.getElementById("kill-count").innerHTML = "Kills: " + kills;
+                            displayKD = kd;
+                            document.getElementById("kd-rate").innerHTML = "K/D: " + displayKD.toFixed(2);
+                            document.getElementById("bed-count").innerHTML = "Beds Destroyed: " + beds;
+
+                        }, 1000);
+                        //}, 60 * 1000 * 1);
+
+                        function updateFlash(tag,type) {
+                            var text = document.getElementById(tag);
+                            if (type === "good")
+                                text.style.color = (text.style.color=='palegreen') ? '#FAF9F6':'palegreen';
+                            else if (type === "bad")
+                                text.style.color = (text.style.color=='palevioletred') ? '#FAF9F6':'palevioletred';
+                        }
+
+                        document.addEventListener('DOMContentLoaded', function() {
+                            update_stats();
+                        }, false);
+                    </script>
+                    <style>                       
+                        span {
+                            font-family: 'MinecraftiaRegular';
+                            font-weight: normal;
+                            font-style: normal; 
+                        }
+                        
+                        .fade-front {
+                            animation: fadeIn 20s infinite;
+                            }
+                            @keyframes fadeIn {
+                            0% {opacity:0;}
+                            10% {opacity:1;}
+                            45% {opacity:1;}
+                            50% {opacity:0;}
+                            100% {opacity:0;}
+                            }
+                        
+                        .fade-back {
+                            animation: fadeOut 20s infinite;
+                            }
+                            @keyframes fadeOut {
+                            0% {opacity:0;}
+                            50% {opacity:0;}
+                            60% {opacity:1;}
+                            95% {opacity:1;}
+                            100% {opacity:0;}
+                            }
+                        
+                        
+                            .container_row{
+                            color: #FAF9F6;
+                            display: grid;
+                            }
+                            
+                            .layer1, .layer2{
+                            padding: 10px;
+                            grid-column: 1;
+                            grid-row: 1;
+                            }
+                            
+                        
+                        #box {
+                            background-color:#FF000080;
+                            border-color: red;
+                            width: 406px;
+                            height: 86px;
+                            color: #FAF9F6;
+                            
+                        }
+                    </style>
+                    <div id="box" style="border-style: solid;">
+                        <div id="txt" class="container_row">
+                            <div class="layer1" style="text-align: center; font-size:20px;">
+                                <span class="fade-front" id="win-count">Wins: </span><span class="fade-front">&nbsp;</span>
+                                <span class="fade-front" id="win-rate">WR: </span><br>
+                                <span class="fade-front" id="ws-count">Streak: </span>
+                            </div>
+                            <div class="layer2" style="text-align: center; font-size:20px;">
+                                <span class="fade-back" id="kill-count">Kills: </span><span class="fade-back">&nbsp;</span>
+                                <span class="fade-back" id="kd-rate">K/D: </span><br>
+                                <span class="fade-back" id="bed-count">Beds Destroyed: </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>           
+        </div>
+
+        <div style="padding: 10px; background-color: #1F1F23B9; text-align: center; border-style: solid; border-color: #1F1F23;">
+            <span style="color: rgb(248,248,255);">Player UUID | API Key<br></span>
+            <input id="uuid">
+            <input id="apiauth"><button onclick="downloadInnerHtml('tracker.html', 'trackerToExport', 'text/html')">Export Tracker</button><br>
+            <span style="color: rgb(248,248,255);">Background Color | Border Color | Text Color<br></span>
+            <input onInput="update(this.jscolor, '#box')" value="CCFFAA" data-jscolor="{alpha:1}">
+            <input onInput="updateBorder(this.jscolor, '#box')" value="CCFFAA" data-jscolor="{alpha:1}">
+            <input onInput="updateTxtColor(this.jscolor, '#txt')" value="CCFFAA" data-jscolor="{alpha:1}">
+        </div>
+
+        <script>
+            function save()
+            {
+                document.getElementById("uuidToUse").innerHTML = document.getElementById("uuid").value;
+                document.getElementById("authToUse").innerHTML = document.getElementById("apiauth").value;
+            }
+        </script>
+
+    </body>
+</html>
